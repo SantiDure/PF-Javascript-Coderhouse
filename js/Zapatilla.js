@@ -18,11 +18,13 @@ class Zapatilla {
 
   //Metodos
   subTotal() {
-    return precio * cantidad;
+    return this.precio * this.cantidad;
   }
 
   tieneDescuento() {
-    this.precio >= 45000 ? this.precio * 0.9 : this.precio;
+    if (this.cantidad) {
+      this.precio *= 0.85;
+    }
   }
 }
 
@@ -32,23 +34,16 @@ const listaZapatillas = [
     "Adidas Response 3.0",
     47999,
     "Adidas",
-    "../assets/adidas/response-3.0.webp",
+    "response-3.0.webp",
     1
   ),
-  new Zapatilla(
-    2,
-    "Adidas Questar",
-    39999,
-    "Adidas",
-    "../assets/adidas/questar.webp",
-    1
-  ),
+  new Zapatilla(2, "Adidas Questar", 39999, "Adidas", "questar.webp", 1),
   new Zapatilla(
     3,
     "Adidas Nebzed Super Boost",
     36999,
     "Adidas",
-    "../assets/adidas/nebzed-super-boost.webp",
+    "nebzed-super-boost.webp",
     1
   ),
   new Zapatilla(
@@ -56,7 +51,7 @@ const listaZapatillas = [
     "Adidas Grand Court",
     25999,
     "Adidas",
-    "../assets/adidas/grand-court-6393-mark.webp",
+    "grand-court-6393-mark.webp",
     1
   ),
   new Zapatilla(
@@ -64,17 +59,10 @@ const listaZapatillas = [
     "Adidas Duramo Protect",
     41999,
     "Adidas",
-    "../assets/adidas/duramo-protect-3985-dash.jpg",
+    "duramo-protect-3985-dash.jpg",
     1
   ),
-  new Zapatilla(
-    6,
-    "Adidas Breaknet",
-    25999,
-    "Adidas",
-    "../assets/adidas/breaknet.webp",
-    1
-  ),
+  new Zapatilla(6, "Adidas Breaknet", 25999, "Adidas", "breaknet.webp", 1),
 ];
 
 //Carga los productos al localStorage

@@ -8,6 +8,8 @@ let contenedor = document.getElementById("contenedor__productos");
 let contador__carrito = document.getElementById("contador__carrito");
 let modal = document.getElementById("modal-contenido");
 let botonVaciar = document.getElementById("vaciar");
+let restar = document.getElementById("menos");
+let sumar = document.getElementById("mas");
 
 //Actualiza el contador del carrito
 
@@ -26,7 +28,7 @@ function mostrarEnDOM() {
       <!-- Product image-->
       <img
         class="card-img-top"
-        src="${item.img}"
+        src="../assets/adidas/${item.img}"
         alt="${item.nombre}"
       />
       <!-- Product details-->
@@ -63,14 +65,14 @@ function mostrarEnCarrito() {
     modal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="${item.img}" class="img-fluid rounded-start" alt="${item.nombre}">
+        <img src="../assets/adidas/${item.img}" class="img-fluid rounded-start" alt="${item.nombre}">
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">${item.nombre}</h5>
           <p class="card-text">$${item.precio}</p>
-          <p class="card-text"><small class="text-muted">Cantidad: </small>${item.cantidad}</p>
-          <button onclick='quitarProducto(${item.id})'  id="${idBoton}" data-id="${idBoton}" type="button" class="btn btn-danger mt-auto btnQuitar" 
+          <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos' class='btn btn-success' type='button'> - </button>  ${item.cantidad}  <button id='mas' class='btn btn-success mas' type='button'> + </button></p>
+          <button onclick='quitarProducto(${item.id})'  id="${idBoton}"  type="button" class="btn btn-danger mt-auto " 
             >Quitar</button
           >
         </div>
@@ -131,3 +133,5 @@ function vaciarCarrito() {
   contarContenidoCarrito();
   mostrarEnCarrito();
 }
+
+//restara o sumara a la cantidad del producto
