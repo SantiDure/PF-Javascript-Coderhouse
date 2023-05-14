@@ -1,17 +1,22 @@
 //Array carrito
+
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+
 //Referencias globales
+
 let contenedor = document.getElementById("contenedor__productos");
 let contador__carrito = document.getElementById("contador__carrito");
 let modal = document.getElementById("modal-contenido");
 let botonVaciar = document.getElementById("vaciar");
 
 //Actualiza el contador del carrito
+
 function contarContenidoCarrito() {
   contador__carrito.innerHTML = `${carrito.length}` || 0;
 }
 
 //Muestra en el dom los productos
+
 function mostrarEnDOM() {
   let productos = JSON.parse(localStorage.getItem("productos"));
   let idBoton = 1;
@@ -47,7 +52,9 @@ function mostrarEnDOM() {
     contarContenidoCarrito();
   });
 }
+
 //Muestra el contenido del carrito en un modal
+
 function mostrarEnCarrito() {
   let enCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
   let idBoton = 1;
@@ -63,7 +70,7 @@ function mostrarEnCarrito() {
           <h5 class="card-title">${item.nombre}</h5>
           <p class="card-text">$${item.precio}</p>
           <p class="card-text"><small class="text-muted">Cantidad: </small>${item.cantidad}</p>
-          <button  id="quitar${idBoton}" data-id="${idBoton}" type="button" class="btn btn-danger mt-auto btnQuitar" 
+          <button onclick='quitarProducto(${item.id})'  id="${idBoton}" data-id="${idBoton}" type="button" class="btn btn-danger mt-auto btnQuitar" 
             >Quitar</button
           >
         </div>
@@ -75,16 +82,8 @@ function mostrarEnCarrito() {
   });
 }
 
-function agregarProductos() {
-  document.onload = agregarAlCarrito(boton1);
-  document.onload = agregarAlCarrito(boton2);
-  document.onload = agregarAlCarrito(boton3);
-  document.onload = agregarAlCarrito(boton4);
-  document.onload = agregarAlCarrito(boton5);
-  document.onload = agregarAlCarrito(boton6);
-}
-
 //Agrega un producto al carrito por medio del boton Agregar al carrito
+
 function agregarAlCarrito(boton) {
   boton.addEventListener("click", () => {
     const producto = listaZapatillas.find((item) => {
@@ -95,60 +94,40 @@ function agregarAlCarrito(boton) {
     localStorage.setItem("carrito", JSON.stringify(carrito));
     contarContenidoCarrito();
     mostrarEnCarrito();
-    hayProductos();
   });
 }
 
+// Posteriormente sera usada para escuchar el evento DOMCONTENTLOADED
+
+function agregarProductos() {
+  agregarAlCarrito(boton1);
+  agregarAlCarrito(boton2);
+  agregarAlCarrito(boton3);
+  agregarAlCarrito(boton4);
+  agregarAlCarrito(boton5);
+  agregarAlCarrito(boton6);
+}
+
+//Busca un producto y lo elimina
+
+function quitarProducto(id) {
+  let idBuscado = carrito.findIndex((producto) => {
+    return producto.id === id;
+  });
+
+  console.log(idBuscado);
+  carrito.splice(idBuscado, 1);
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarEnCarrito();
+  contarContenidoCarrito();
+}
+
 //Vacia el carrito y vuelve el contador a 0
+
 function vaciarCarrito() {
   carrito = [];
   localStorage.setItem("carrito", JSON.stringify(carrito));
   contarContenidoCarrito();
   mostrarEnCarrito();
-}
-
-//Busca un producto y lo elimina
-
-function quitarProducto(boton) {
-  if (carrito.length > 0) {
-    const producto = carrito.findIndex((producto) => {
-      producto.id === +boton.dataset.id;
-
-      console.log(producto);
-      console.log("ESTOY EN QUITAR PRODUCTO");
-      if (producto >= 0) {
-        carrito.splice(producto, 1);
-        localStorage.setItem("carrito", JSON.stringify(carrito));
-        contarContenidoCarrito();
-        mostrarEnCarrito();
-        hayProductos();
-      }
-    });
-  }
-}
-function hayProductos() {
-  if (carrito.length > 0) {
-    let quitarUno = document.getElementById("quitar1");
-    quitarUno.onload = quitarProducto(quitar1);
-    if (carrito.length > 1 && quitar1) {
-      let quitarDos = document.getElementById("quitar2");
-      quitarDos.onload = quitarProducto(quitar2);
-    }
-    if (carrito.length > 2 && quitar2) {
-      let quitarTres = document.getElementById("quitar3");
-      quitarTres.onload = quitarProducto(quitar3);
-    }
-    if (carrito.length > 3 && quitar3) {
-      let quitarCuatro = document.getElementById("quitar4");
-      quitarCuatro.onload = quitarProducto(quitar4);
-    }
-    if (carrito.length > 4 && quitar4) {
-      let quitarCinco = document.getElementById("quitar5");
-      quitarCinco.onload = quitarProducto(quitar5);
-    }
-    if (carrito.length > 5 && quitar5) {
-      let quitarSeis = document.getElementById("quitar6");
-      quitarSeis.onload = quitarProducto(quitar6);
-    }
-  }
 }
