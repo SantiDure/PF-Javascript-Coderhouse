@@ -92,10 +92,14 @@ function agregarAlCarrito(boton) {
       return item.id === +boton.dataset.id;
     });
     carrito.push(producto);
-    console.log(`agregaste ${producto.nombre}`);
     localStorage.setItem("carrito", JSON.stringify(carrito));
     contarContenidoCarrito();
     mostrarEnCarrito();
+    Swal.fire(
+      "Producto agregado al carrito!",
+      `Agregaste ${producto.nombre}`,
+      "success"
+    );
   });
 }
 
@@ -123,6 +127,7 @@ function quitarProducto(id) {
   localStorage.setItem("carrito", JSON.stringify(carrito));
   mostrarEnCarrito();
   contarContenidoCarrito();
+  Swal.fire("Quitaste un producto!", "", "info");
 }
 
 //Vacia el carrito y vuelve el contador a 0
@@ -132,6 +137,7 @@ function vaciarCarrito() {
   localStorage.setItem("carrito", JSON.stringify(carrito));
   contarContenidoCarrito();
   mostrarEnCarrito();
+  Swal.fire("Se vació tu carrito!", "", "warning");
 }
 
 //restara o sumara a la cantidad del producto

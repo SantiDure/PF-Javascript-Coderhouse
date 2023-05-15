@@ -22,8 +22,17 @@ class Zapatilla {
   }
 
   tieneDescuento() {
-    if (this.cantidad) {
-      this.precio *= 0.85;
+    if (this.cantidad > 5) {
+      return (this.precio *= 0.85);
+    }
+  }
+
+  sumarCantidad() {
+    return this.cantidad++;
+  }
+  restarCantidad() {
+    if (this.cantidad > 1) {
+      return this.cantidad--;
     }
   }
 }
