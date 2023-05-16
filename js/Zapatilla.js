@@ -18,35 +18,14 @@ class Zapatilla {
 
   //Metodos
   subTotal() {
-    return this.precio * this.cantidad;
+    return (this.precio * this.cantidad).toFixed(2);
   }
 
   tieneDescuento() {
-    if (this.cantidad > 5) {
-      return (this.precio *= 0.85);
+    if (this.cantidad > 4) {
+      return `Tiene descuento de 15%, su precio por prenda pasa a ser de  $${(this.precio *= 0.85).toFixed()}`;
+    } else {
+      return `$${this.precio}`;
     }
   }
-
-  sumarCantidad() {
-    return this.cantidad++;
-  }
-  restarCantidad() {
-    if (this.cantidad > 1) {
-      return this.cantidad--;
-    }
-  }
-}
-
-let listaZapatillas = [];
-function obtenerDatos() {
-  const URLSTOCK = "./stock.json";
-  fetch(URLSTOCK)
-    .then((response) => response.json())
-    .then((data) => {
-      listaZapatillas = data;
-      localStorage.setItem("productos", JSON.stringify(listaZapatillas));
-      setTimeout(mostrarEnDOM, 500);
-      setTimeout(agregarProductos, 500);
-      setTimeout(mostrarEnCarrito, 500);
-    });
 }

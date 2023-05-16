@@ -2,6 +2,21 @@
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
+//Obteniendo los datos desde el json
+let listaZapatillas = [];
+function obtenerDatos() {
+  const URLSTOCK = "./stock.json";
+  fetch(URLSTOCK)
+    .then((response) => response.json())
+    .then((data) => {
+      listaZapatillas = data;
+      localStorage.setItem("productos", JSON.stringify(listaZapatillas));
+      mostrarEnDOM();
+      agregarProductos();
+      mostrarEnCarrito();
+    });
+}
+
 //Referencias globales
 
 let contenedor = document.getElementById("contenedor__productos");
@@ -20,7 +35,20 @@ function contarContenidoCarrito() {
 //Muestra en el dom los productos
 
 function mostrarEnDOM() {
-  let productos = JSON.parse(localStorage.getItem("productos"));
+  productos = [];
+  let stock = JSON.parse(localStorage.getItem("productos"));
+  stock.forEach((zapa) => {
+    let nuevoProducto = new Zapatilla(
+      zapa.id,
+      zapa.nombre,
+      zapa.precio,
+      zapa.marca,
+      zapa.img,
+      zapa.cantidad
+    );
+    productos.push(nuevoProducto);
+  });
+  console.log(productos);
   let idBoton = 1;
   productos.forEach((item) => {
     contenedor.innerHTML += `<div class="col mb-5">
@@ -38,6 +66,7 @@ function mostrarEnDOM() {
           <h5 class="fw-bolder">${item.nombre}</h5>
           <!-- Product price-->
           $${item.precio}
+        
         </div>
       </div>
       <!-- Product actions-->
@@ -50,29 +79,77 @@ function mostrarEnDOM() {
       </div>
     </div>
     </div>`;
+
     idBoton++;
     contarContenidoCarrito();
   });
 }
 
+function sumarUno(id) {
+  let idBuscado = carrito.find((producto) => {
+    return producto.id === id;
+  });
+  idBuscado.cantidad++;
+
+  localStorage.setItem("carrito", JSON.stringify(carrito));
+  mostrarEnCarrito();
+  contarContenidoCarrito();
+}
+
+function restarUno(id) {
+  let idBuscado = carrito.find((producto) => {
+    return producto.id === id;
+  });
+  if (idBuscado.cantidad > 1) {
+    idBuscado.cantidad--;
+
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+    mostrarEnCarrito();
+    contarContenidoCarrito();
+  }
+}
+
 //Muestra el contenido del carrito en un modal
 
 function mostrarEnCarrito() {
+  let carrito = [];
   let enCarrito = JSON.parse(localStorage.getItem("carrito")) || [];
+  enCarrito.forEach((zapa) => {
+    let nuevoProducto = new Zapatilla(
+      zapa.id,
+      zapa.nombre,
+      zapa.precio,
+      zapa.marca,
+      zapa.img,
+      zapa.cantidad
+    );
+    carrito.push(nuevoProducto);
+  });
   let idBoton = 1;
   modal.innerHTML = "";
-  enCarrito.forEach((item) => {
+  carrito.forEach((item) => {
     modal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="${item.img}" class="img-fluid rounded-start" alt="${item.nombre}">
+        <img src="${item.img}" class="img-fluid rounded-start" alt="${
+      item.nombre
+    }">
       </div>
       <div class="col-md-8">
         <div class="card-body">
-          <h5 class="card-title">${item.nombre}</h5>
-          <p class="card-text">$${item.precio}</p>
-          <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos'  class='btn btn-success' type='button'> - </button>  ${item.cantidad}  <button id='mas' class='btn btn-success mas' type='button'> + </button></p>
-          <button onclick='quitarProducto(${item.id})'  id="${idBoton}"  type="button" class="btn btn-danger mt-auto " 
+          <h5 class="card-title mb-3">${item.nombre}</h5>
+          <p class="card-text">Precio unitario: ${item.tieneDescuento()}</p>
+          <p class="card-text">Sub total: $${item.subTotal()}</p>
+          <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos'  class='btn btn-success menos' onclick="restarUno(${
+            item.id
+          })" type='button'> - </button>  ${
+      item.cantidad
+    }  <button id='mas' class='btn btn-success mas' onclick="sumarUno(${
+      item.id
+    })" type='button'> + </button></p>
+          <button onclick='quitarProducto(${
+            item.id
+          })'  id="${idBoton}"  type="button" class="btn btn-danger mt-auto " 
             >Quitar</button
           >
         </div>
@@ -139,4 +216,5 @@ function vaciarCarrito() {
   Swal.fire("Se vació tu carrito!", "", "warning");
 }
 
-//restara o sumara a la cantidad del producto
+const btnMas = document.querySelector(".mas");
+const btnMenos = document.querySelector(".menos");
