@@ -48,7 +48,6 @@ function mostrarEnDOM() {
     );
     productos.push(nuevoProducto);
   });
-  console.log(productos);
   let idBoton = 1;
   productos.forEach((item) => {
     contenedor.innerHTML += `<div class="col mb-5">
@@ -161,14 +160,30 @@ function mostrarEnCarrito() {
   });
 }
 
+//comprueba si existe
+function existe(id) {
+  const index = carrito.findIndex((i) => {
+    return i.id === id;
+  });
+  return index;
+}
+
 //Agrega un producto al carrito por medio del boton Agregar al carrito
 
-function agregarAlCarrito(boton) {
+function agregarAlCarrito(boton, id) {
   boton.addEventListener("click", () => {
     const producto = listaZapatillas.find((item) => {
       return item.id === +boton.dataset.id;
     });
-    carrito.push(producto);
+    const yaExiste = existe(id);
+    if (yaExiste < 0) {
+      carrito.push(producto);
+    } else {
+      let idBuscado = carrito.find((producto) => {
+        return producto.id === id;
+      });
+      idBuscado.cantidad++;
+    }
     localStorage.setItem("carrito", JSON.stringify(carrito));
     contarContenidoCarrito();
     mostrarEnCarrito();
@@ -183,12 +198,12 @@ function agregarAlCarrito(boton) {
 // Posteriormente sera usada para escuchar el evento DOMCONTENTLOADED
 
 function agregarProductos() {
-  agregarAlCarrito(boton1);
-  agregarAlCarrito(boton2);
-  agregarAlCarrito(boton3);
-  agregarAlCarrito(boton4);
-  agregarAlCarrito(boton5);
-  agregarAlCarrito(boton6);
+  agregarAlCarrito(boton1, 1);
+  agregarAlCarrito(boton2, 2);
+  agregarAlCarrito(boton3, 3);
+  agregarAlCarrito(boton4, 4);
+  agregarAlCarrito(boton5, 5);
+  agregarAlCarrito(boton6, 6);
 }
 
 //Busca un producto y lo elimina
@@ -216,5 +231,6 @@ function vaciarCarrito() {
   Swal.fire("Se vació tu carrito!", "", "warning");
 }
 
-const btnMas = document.querySelector(".mas");
-const btnMenos = document.querySelector(".menos");
+//Algunos eventos
+document.addEventListener("DOMContentLoaded", obtenerDatos);
+botonVaciar.addEventListener("click", vaciarCarrito);
