@@ -28,7 +28,7 @@ function mostrarEnDOM() {
       <!-- Product image-->
       <img
         class="card-img-top"
-        src="../assets/adidas/${item.img}"
+        src="${item.img}"
         alt="${item.nombre}"
       />
       <!-- Product details-->
@@ -65,13 +65,13 @@ function mostrarEnCarrito() {
     modal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
       <div class="col-md-4">
-        <img src="../assets/adidas/${item.img}" class="img-fluid rounded-start" alt="${item.nombre}">
+        <img src="${item.img}" class="img-fluid rounded-start" alt="${item.nombre}">
       </div>
       <div class="col-md-8">
         <div class="card-body">
           <h5 class="card-title">${item.nombre}</h5>
           <p class="card-text">$${item.precio}</p>
-          <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos' class='btn btn-success' type='button'> - </button>  ${item.cantidad}  <button id='mas' class='btn btn-success mas' type='button'> + </button></p>
+          <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos'  class='btn btn-success' type='button'> - </button>  ${item.cantidad}  <button id='mas' class='btn btn-success mas' type='button'> + </button></p>
           <button onclick='quitarProducto(${item.id})'  id="${idBoton}"  type="button" class="btn btn-danger mt-auto " 
             >Quitar</button
           >
@@ -121,7 +121,6 @@ function quitarProducto(id) {
     return producto.id === id;
   });
 
-  console.log(idBuscado);
   carrito.splice(idBuscado, 1);
 
   localStorage.setItem("carrito", JSON.stringify(carrito));

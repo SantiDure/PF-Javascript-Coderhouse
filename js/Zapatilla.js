@@ -37,7 +37,18 @@ class Zapatilla {
   }
 }
 
-const listaZapatillas = [
+let listaZapatillas = [];
+function obtenerDatos() {
+  const URLSTOCK = "./stock.json";
+  fetch(URLSTOCK)
+    .then((response) => response.json())
+    .then((data) => {
+      listaZapatillas = data;
+      localStorage.setItem("productos", JSON.stringify(listaZapatillas));
+    });
+}
+
+/*const listaZapatillas = [
   new Zapatilla(
     1,
     "Adidas Response 3.0",
@@ -76,3 +87,4 @@ const listaZapatillas = [
 
 //Carga los productos al localStorage
 localStorage.setItem("productos", JSON.stringify(listaZapatillas));
+*/
