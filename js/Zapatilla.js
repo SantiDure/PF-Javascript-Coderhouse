@@ -45,46 +45,8 @@ function obtenerDatos() {
     .then((data) => {
       listaZapatillas = data;
       localStorage.setItem("productos", JSON.stringify(listaZapatillas));
+      setTimeout(mostrarEnDOM, 500);
+      setTimeout(agregarProductos, 500);
+      setTimeout(mostrarEnCarrito, 500);
     });
 }
-
-/*const listaZapatillas = [
-  new Zapatilla(
-    1,
-    "Adidas Response 3.0",
-    47999,
-    "Adidas",
-    "response-3.0.webp",
-    1
-  ),
-  new Zapatilla(2, "Adidas Questar", 39999, "Adidas", "questar.webp", 1),
-  new Zapatilla(
-    3,
-    "Adidas Nebzed Super Boost",
-    36999,
-    "Adidas",
-    "nebzed-super-boost.webp",
-    1
-  ),
-  new Zapatilla(
-    4,
-    "Adidas Grand Court",
-    25999,
-    "Adidas",
-    "grand-court-6393-mark.webp",
-    1
-  ),
-  new Zapatilla(
-    5,
-    "Adidas Duramo Protect",
-    41999,
-    "Adidas",
-    "duramo-protect-3985-dash.jpg",
-    1
-  ),
-  new Zapatilla(6, "Adidas Breaknet", 25999, "Adidas", "breaknet.webp", 1),
-];
-
-//Carga los productos al localStorage
-localStorage.setItem("productos", JSON.stringify(listaZapatillas));
-*/
