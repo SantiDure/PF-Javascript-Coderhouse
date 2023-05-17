@@ -6,12 +6,11 @@ let telefono = null;
 let codigoPostal = null;
 let lugarResidencia = null;
 
-//costo de la compra
-let costoTotal = 0;
 //Array carrito
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
+let productos = [];
 //Referencias globales
 
 const contenedor = document.getElementById("contenedor__productos");
@@ -169,7 +168,6 @@ function mostrarEnCarrito() {
   </div>`;
     idBoton++;
     contarContenidoCarrito();
-    costoTotal += parseFloat(item.subTotal());
   });
 }
 
@@ -250,6 +248,15 @@ function vaciarCarrito() {
   Swal.fire("Se vació tu carrito!", "", "warning");
 }
 
+//Costo total
+function calcularCostoTotal() {
+  let costoTotal = 0;
+  carrito.forEach((item) => {
+    costoTotal += item.precio * item.cantidad;
+  });
+  return costoTotal;
+}
+
 //Eventos sueltos
 
 document.addEventListener("DOMContentLoaded", obtenerDatos);
@@ -296,17 +303,17 @@ btnFinalizarCompra.addEventListener("click", () => {
   carrito = JSON.parse(localStorage.getItem("carrito"));
   let mensaje = `Compraste:<br>`;
 
+  let costoTotal = calcularCostoTotal();
   carrito.forEach((item) => {
-    mensaje += `${item.nombre} (${item.cantidad})<br>
-                El costo total de tu compra es de: $${costoTotal}  `;
+    mensaje += `${item.nombre} (${item.cantidad})<br>`;
   });
-
+  mensaje += `El costo total de tu compra es de: $${costoTotal}`;
   Swal.fire({
     title: `${nombre}, el pedido estará en tu puerta dentro de 3 a 5 días hábiles`,
     html: mensaje,
     icon: "info",
   });
-
+  localStorage.setItem("carrito", JSON.stringify(carrito));
   localStorage.removeItem("carrito");
   mostrarEnCarrito();
   contador__carrito.innerHTML = 0;
