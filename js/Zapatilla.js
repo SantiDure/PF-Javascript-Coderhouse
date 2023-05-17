@@ -22,8 +22,10 @@ class Zapatilla {
   }
 
   tieneDescuento() {
-    if (this.cantidad > 4) {
-      return `Tiene descuento de 15%, su precio por prenda pasa a ser de  $${(this.precio *= 0.85).toFixed()}`;
+    if (this.cantidad > 2) {
+      return `Tiene descuento de 15%, su precio por prenda pasa a ser de  $${(this.precio *= 0.85).toFixed(
+        2
+      )}`;
     } else {
       return `$${this.precio}`;
     }

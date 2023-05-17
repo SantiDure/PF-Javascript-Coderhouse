@@ -1,3 +1,11 @@
+//Datos del usuario
+let nombre = null;
+let apellido = null;
+let email = null;
+let telefono = null;
+let codigoPostal = null;
+let lugarResidencia = null;
+
 //Array carrito
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -11,7 +19,7 @@ const modal = document.getElementById("exampleModal");
 const botonVaciar = document.getElementById("vaciar");
 const restar = document.getElementById("menos");
 const sumar = document.getElementById("mas");
-const btnFinalizarCompra = document.getElementById("btnFinalizar");
+const btnFinalizarCompra = modal.querySelector("#btnFinalizar");
 
 //Obteniendo los datos desde el json
 let listaZapatillas = [];
@@ -162,7 +170,7 @@ function mostrarEnCarrito() {
   });
 }
 
-//comprueba si existe
+//comprueba si existe el producto en el carrito
 function existe(id) {
   const index = carrito.findIndex((i) => {
     return i.id === id;
@@ -177,6 +185,7 @@ function agregarAlCarrito(boton, id) {
     const producto = listaZapatillas.find((item) => {
       return item.id === +boton.dataset.id;
     });
+
     const yaExiste = existe(id);
     if (yaExiste < 0) {
       carrito.push(producto);
@@ -214,7 +223,7 @@ function quitarProducto(id) {
   let idBuscado = carrito.findIndex((producto) => {
     return producto.id === id;
   });
-
+  carrito[idBuscado].cantidad = 1;
   carrito.splice(idBuscado, 1);
 
   localStorage.setItem("carrito", JSON.stringify(carrito));
@@ -227,7 +236,12 @@ function quitarProducto(id) {
 
 function vaciarCarrito() {
   carrito = [];
+  let stock = JSON.parse(localStorage.getItem("productos"));
+  stock.forEach((item) => {
+    item.cantidad = 1;
+  });
   localStorage.setItem("carrito", JSON.stringify(carrito));
+  localStorage.setItem("productos", JSON.stringify(stock));
   contarContenidoCarrito();
   mostrarEnCarrito();
   Swal.fire("Se vació tu carrito!", "", "warning");
@@ -236,28 +250,23 @@ function vaciarCarrito() {
 //Eventos sueltos
 
 document.addEventListener("DOMContentLoaded", obtenerDatos);
-
-btnFinalizarCompra.addEventListener("click", () => {
-  // modal.classList.remove("show");
+document.addEventListener("DOMContentLoaded", () => {
   Swal.fire({
-    title: "Completa tus datos",
-    html:
-      '<input type="text" id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">' +
-      '<input type="text" id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">' +
-      '<input type="email" id="email" name="email" class="swal2-input" placeholder="Correo electrónico">' +
-      '<input type="text" id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">' +
-      '<input type="number" id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal">' +
-      '<input type="text" id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">',
-
-    showCancelButton: true,
+    title: "Bienvenido! Por favor, completa tus datos para continuar",
+    html: `<input type="text" id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">
+      <input  id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">
+      <input  id="email" name="email" class="swal2-input" placeholder="Correo electrónico">
+      <input id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">
+      <input id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal"> 
+      <input id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">`,
+    allowOutsideClick: false,
     preConfirm: () => {
-      const nombre = Swal.getPopup().querySelector("#nombre").value;
-      const apellido = Swal.getPopup().querySelector("#apellido").value;
-      const email = Swal.getPopup().querySelector("#email").value;
-      const telefono = Swal.getPopup().querySelector("#telefono").value;
-      const codigoPostal =
-        Swal.getPopup().querySelector("#codigo-postal").value;
-      const lugarResidencia =
+      nombre = Swal.getPopup().querySelector("#nombre").value;
+      apellido = Swal.getPopup().querySelector("#apellido").value;
+      email = Swal.getPopup().querySelector("#email").value;
+      telefono = Swal.getPopup().querySelector("#telefono").value;
+      codigoPostal = Swal.getPopup().querySelector("#codigo-postal").value;
+      lugarResidencia =
         Swal.getPopup().querySelector("#lugar-residencia").value;
 
       if (
@@ -271,21 +280,25 @@ btnFinalizarCompra.addEventListener("click", () => {
         Swal.showValidationMessage("Completa todos los campos");
         return false;
       }
-
-      // Aquí puedes realizar acciones con los datos ingresados por el usuario
-      console.log("Nombre:", nombre);
-      console.log("Apellido:", apellido);
-      console.log("Correo electrónico:", email);
-      console.log("Teléfono:", telefono);
-      console.log("Código postal:", codigoPostal);
-      console.log("Lugar de residencia:", lugarResidencia);
     },
   }).then((result) => {
-    if (result.isDismissed) {
-      // El usuario ha cancelado la alerta
-      console.log("Alerta cancelada");
+    if (result.isConfirmed) {
+      Swal.fire("Saved!", "", "success");
+    } else {
+      Swal.fire("Changes are not saved", "", "info");
     }
   });
 });
+btnFinalizarCompra.addEventListener("click", () => {
+  carrito = JSON.parse(localStorage.getItem("carrito"));
+  let mensaje = `Compraste:<br>`;
+  carrito.forEach((item) => {
+    mensaje += `${item.nombre} (${item.cantidad})<br>`;
+  });
 
-botonVaciar.addEventListener("click", vaciarCarrito);
+  Swal.fire({
+    title: `${nombre}, el pedido estará en tu puerta dentro de 3 a 5 días hábiles`,
+    html: mensaje,
+    icon: "info",
+  });
+});
