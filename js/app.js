@@ -238,17 +238,17 @@ function vaciarCarrito() {
 document.addEventListener("DOMContentLoaded", obtenerDatos);
 
 btnFinalizarCompra.addEventListener("click", () => {
-  modal.classList.remove("show");
+  // modal.classList.remove("show");
   Swal.fire({
     title: "Completa tus datos",
     html:
-      '<input id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">' +
-      '<input id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">' +
-      '<input id="email" name="email" class="swal2-input" placeholder="Correo electrónico">' +
-      '<input id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">' +
-      '<input id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal">' +
-      '<input id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">',
-    focusConfirm: false,
+      '<input type="text" id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">' +
+      '<input type="text" id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">' +
+      '<input type="email" id="email" name="email" class="swal2-input" placeholder="Correo electrónico">' +
+      '<input type="text" id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">' +
+      '<input type="number" id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal">' +
+      '<input type="text" id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">',
+
     showCancelButton: true,
     preConfirm: () => {
       const nombre = Swal.getPopup().querySelector("#nombre").value;
@@ -260,7 +260,6 @@ btnFinalizarCompra.addEventListener("click", () => {
       const lugarResidencia =
         Swal.getPopup().querySelector("#lugar-residencia").value;
 
-      // Validar campos obligatorios
       if (
         !nombre ||
         !apellido ||
