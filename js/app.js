@@ -274,29 +274,20 @@ document.addEventListener("DOMContentLoaded", () => {
   Swal.fire({
     title: "Bienvenido! Por favor, completa tus datos para continuar",
     html: `<input type="text" id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">
-      <input  id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">
-      <input  id="email" name="email" class="swal2-input" placeholder="Correo electrónico">
-      <input id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">
-      <input id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal"> 
-      <input id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">`,
+      <input type="email" id="email" name="email" class="swal2-input" placeholder="Correo electrónico">
+      <input type="number" id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">
+      <input type="number" id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal"> 
+      <input type="text" id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">`,
     allowOutsideClick: false,
     preConfirm: () => {
       nombre = Swal.getPopup().querySelector("#nombre").value;
-      apellido = Swal.getPopup().querySelector("#apellido").value;
       email = Swal.getPopup().querySelector("#email").value;
       telefono = Swal.getPopup().querySelector("#telefono").value;
       codigoPostal = Swal.getPopup().querySelector("#codigo-postal").value;
       lugarResidencia =
         Swal.getPopup().querySelector("#lugar-residencia").value;
 
-      if (
-        !nombre ||
-        !apellido ||
-        !email ||
-        !telefono ||
-        !codigoPostal ||
-        !lugarResidencia
-      ) {
+      if (!nombre || !email || !telefono || !codigoPostal || !lugarResidencia) {
         Swal.showValidationMessage("Completa todos los campos");
         return false;
       }
