@@ -283,9 +283,9 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   }).then((result) => {
     if (result.isConfirmed) {
-      Swal.fire("Saved!", "", "success");
+      Swal.fire("Tus datos se han guardado con éxito!", "", "success");
     } else {
-      Swal.fire("Changes are not saved", "", "info");
+      Swal.fire("Algo salió mal", "", "error");
     }
   });
 });
@@ -301,4 +301,8 @@ btnFinalizarCompra.addEventListener("click", () => {
     html: mensaje,
     icon: "info",
   });
+
+  localStorage.removeItem("carrito");
+  mostrarEnCarrito();
+  contarContenidoCarrito();
 });
