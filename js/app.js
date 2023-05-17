@@ -275,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
     title: "Bienvenido! Por favor, completa tus datos para continuar",
     html: `<input type="text" id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">
       <input type="email" id="email" name="email" class="swal2-input" placeholder="Correo electrónico">
-      <input type="number" id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">
+      <input type="text" id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">
       <input type="number" id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal"> 
       <input type="text" id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">`,
     allowOutsideClick: false,
@@ -288,7 +288,7 @@ document.addEventListener("DOMContentLoaded", () => {
         Swal.getPopup().querySelector("#lugar-residencia").value;
 
       if (!nombre || !email || !telefono || !codigoPostal || !lugarResidencia) {
-        Swal.showValidationMessage("Completa todos los campos");
+        Swal.showValidationMessage("Campos vacíos o con datos no válidos.");
         return false;
       }
     },
