@@ -2,6 +2,17 @@
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
 
+//Referencias globales
+
+const contenedor = document.getElementById("contenedor__productos");
+const contador__carrito = document.getElementById("contador__carrito");
+const modalContenido = document.getElementById("modal-contenido");
+const modal = document.getElementById("exampleModal");
+const botonVaciar = document.getElementById("vaciar");
+const restar = document.getElementById("menos");
+const sumar = document.getElementById("mas");
+const btnFinalizarCompra = document.getElementById("btnFinalizar");
+
 //Obteniendo los datos desde el json
 let listaZapatillas = [];
 function obtenerDatos() {
@@ -16,15 +27,6 @@ function obtenerDatos() {
       mostrarEnCarrito();
     });
 }
-
-//Referencias globales
-
-let contenedor = document.getElementById("contenedor__productos");
-let contador__carrito = document.getElementById("contador__carrito");
-let modal = document.getElementById("modal-contenido");
-let botonVaciar = document.getElementById("vaciar");
-let restar = document.getElementById("menos");
-let sumar = document.getElementById("mas");
 
 //Actualiza el contador del carrito
 
@@ -125,9 +127,9 @@ function mostrarEnCarrito() {
     carrito.push(nuevoProducto);
   });
   let idBoton = 1;
-  modal.innerHTML = "";
+  modalContenido.innerHTML = "";
   carrito.forEach((item) => {
-    modal.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
+    modalContenido.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
       <div class="col-md-4">
         <img src="${item.img}" class="img-fluid rounded-start" alt="${
@@ -231,6 +233,60 @@ function vaciarCarrito() {
   Swal.fire("Se vació tu carrito!", "", "warning");
 }
 
-//Algunos eventos
+//Eventos sueltos
+
 document.addEventListener("DOMContentLoaded", obtenerDatos);
+
+btnFinalizarCompra.addEventListener("click", () => {
+  modal.classList.remove("show");
+  Swal.fire({
+    title: "Completa tus datos",
+    html:
+      '<input id="nombre" name="nombre" class="swal2-input" placeholder="Nombre">' +
+      '<input id="apellido" name="apellido" class="swal2-input" placeholder="Apellido">' +
+      '<input id="email" name="email" class="swal2-input" placeholder="Correo electrónico">' +
+      '<input id="telefono" name="telefono" class="swal2-input" placeholder="Teléfono">' +
+      '<input id="codigo-postal" name="codigo-postal" class="swal2-input" placeholder="Código postal">' +
+      '<input id="lugar-residencia" name="lugar-residencia" class="swal2-input" placeholder="Lugar de residencia">',
+    focusConfirm: false,
+    showCancelButton: true,
+    preConfirm: () => {
+      const nombre = Swal.getPopup().querySelector("#nombre").value;
+      const apellido = Swal.getPopup().querySelector("#apellido").value;
+      const email = Swal.getPopup().querySelector("#email").value;
+      const telefono = Swal.getPopup().querySelector("#telefono").value;
+      const codigoPostal =
+        Swal.getPopup().querySelector("#codigo-postal").value;
+      const lugarResidencia =
+        Swal.getPopup().querySelector("#lugar-residencia").value;
+
+      // Validar campos obligatorios
+      if (
+        !nombre ||
+        !apellido ||
+        !email ||
+        !telefono ||
+        !codigoPostal ||
+        !lugarResidencia
+      ) {
+        Swal.showValidationMessage("Completa todos los campos");
+        return false;
+      }
+
+      // Aquí puedes realizar acciones con los datos ingresados por el usuario
+      console.log("Nombre:", nombre);
+      console.log("Apellido:", apellido);
+      console.log("Correo electrónico:", email);
+      console.log("Teléfono:", telefono);
+      console.log("Código postal:", codigoPostal);
+      console.log("Lugar de residencia:", lugarResidencia);
+    },
+  }).then((result) => {
+    if (result.isDismissed) {
+      // El usuario ha cancelado la alerta
+      console.log("Alerta cancelada");
+    }
+  });
+});
+
 botonVaciar.addEventListener("click", vaciarCarrito);
