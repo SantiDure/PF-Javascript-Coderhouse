@@ -306,3 +306,4 @@ btnFinalizarCompra.addEventListener("click", () => {
   mostrarEnCarrito();
   contarContenidoCarrito();
 });
+botonVaciar.addEventListener("click", vaciarCarrito);
