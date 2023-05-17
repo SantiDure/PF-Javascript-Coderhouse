@@ -135,15 +135,19 @@ function mostrarEnCarrito() {
     );
     carrito.push(nuevoProducto);
   });
-  let idBoton = 1;
-  modalContenido.innerHTML = "";
-  carrito.forEach((item) => {
-    modalContenido.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
+  if (carrito.length === 0) {
+    modalContenido.innerHTML = "";
+    modalContenido.innerHTML += "Carrito vacío";
+  } else {
+    let idBoton = 1;
+    modalContenido.innerHTML = "";
+    carrito.forEach((item) => {
+      modalContenido.innerHTML += `<div class="card mb-3" style="max-width: 540px;">
     <div class="row g-0">
       <div class="col-md-4">
         <img src="${item.img}" class="img-fluid rounded-start" alt="${
-      item.nombre
-    }">
+        item.nombre
+      }">
       </div>
       <div class="col-md-8">
         <div class="card-body">
@@ -153,10 +157,10 @@ function mostrarEnCarrito() {
           <p class="card-text"><small class="text-muted">Cantidad: </small><button id='menos'  class='btn btn-success menos' onclick="restarUno(${
             item.id
           })" type='button'> - </button>  ${
-      item.cantidad
-    }  <button id='mas' class='btn btn-success mas' onclick="sumarUno(${
-      item.id
-    })" type='button'> + </button></p>
+        item.cantidad
+      }  <button id='mas' class='btn btn-success mas' onclick="sumarUno(${
+        item.id
+      })" type='button'> + </button></p>
           <button onclick='quitarProducto(${
             item.id
           })'  id="${idBoton}"  type="button" class="btn btn-danger mt-auto " 
@@ -166,9 +170,10 @@ function mostrarEnCarrito() {
       </div>
     </div>
   </div>`;
-    idBoton++;
-    contarContenidoCarrito();
-  });
+      idBoton++;
+      contarContenidoCarrito();
+    });
+  }
 }
 
 //comprueba si existe el producto en el carrito
@@ -252,8 +257,13 @@ function vaciarCarrito() {
 function calcularCostoTotal() {
   let costoTotal = 0;
   carrito.forEach((item) => {
-    costoTotal += item.precio * item.cantidad;
+    if (item.cantidad > 2) {
+      costoTotal += item.cantidad * (item.precio * 0.85);
+    } else {
+      costoTotal += item.cantidad * item.precio;
+    }
   });
+
   return costoTotal;
 }
 
