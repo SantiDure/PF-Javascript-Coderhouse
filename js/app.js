@@ -6,6 +6,8 @@ let telefono = null;
 let codigoPostal = null;
 let lugarResidencia = null;
 
+//costo de la compra
+let costoTotal = 0;
 //Array carrito
 
 let carrito = JSON.parse(localStorage.getItem("carrito")) || [];
@@ -167,6 +169,7 @@ function mostrarEnCarrito() {
   </div>`;
     idBoton++;
     contarContenidoCarrito();
+    costoTotal += parseFloat(item.subTotal());
   });
 }
 
@@ -292,8 +295,10 @@ document.addEventListener("DOMContentLoaded", () => {
 btnFinalizarCompra.addEventListener("click", () => {
   carrito = JSON.parse(localStorage.getItem("carrito"));
   let mensaje = `Compraste:<br>`;
+
   carrito.forEach((item) => {
-    mensaje += `${item.nombre} (${item.cantidad})<br>`;
+    mensaje += `${item.nombre} (${item.cantidad})<br>
+                El costo total de tu compra es de: $${costoTotal}  `;
   });
 
   Swal.fire({
@@ -304,6 +309,6 @@ btnFinalizarCompra.addEventListener("click", () => {
 
   localStorage.removeItem("carrito");
   mostrarEnCarrito();
-  contarContenidoCarrito();
+  contador__carrito.innerHTML = 0;
 });
 botonVaciar.addEventListener("click", vaciarCarrito);
